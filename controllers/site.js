@@ -8,6 +8,10 @@ function home(req, h) {
 }
 
 function register (req, h) {
+  if (req.state.user) {
+    return h.redirect('/')
+  }
+
   return h.view('register',{
     title: 'Registro',
     user: req.state.user
