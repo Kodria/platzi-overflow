@@ -25,27 +25,39 @@ class Questions {
     return data
   }
 
-  // async validateUser(data) {
-  //   const query = await this.collection.orderByChild('email').equalTo(data.email).once('value')    
+  async getOne(id) {
+    const query = await this.collection.child(id).once('value')
+    const data = query.val()
+    return data
+  }
 
-  //   const userFound = query.val()
-  //   if (userFound) {
-  //     const userId = Object.keys(userFound)[0]
-  //     const passRight = await bcrypt.compare(data.password, userFound[userId].password)
-  //     const result = (passRight) ? userFound[userId] : false
+  async answer(data, user) {
+    const newAnswer = {
+      text: data.answer,
+      user: user
+    }
 
-  //     return result
-  //   }
+    const answers = await this.collection.child(data.id).child('answers').push(newAnswer)
+    return answers
+  }
 
-  //   return false
-  // }
+  async setAnswerRight(questionId, answerId, user) {
+    const query = await this.collection.child(questionId).once('value')
+    const question = query.val()
 
-  // static async encript(password) {
-  //   const saltRounds = 10
-  //   const hashedPassword = await bcrypt.hash(password,saltRounds)
+    const answers = question.answers
 
-  //   return hashedPassword;
-  // }
+    if (!user.email === question.owner.email) {
+      return false
+    }
+
+    for (let key in answers) {
+      answers[key].correct = (key === answerId)
+    }
+
+    const update = await this.collection.child(questionId).child('answers').update(answers)
+    return update
+  }
 }
 
 module.exports = Questions

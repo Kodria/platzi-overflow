@@ -40,6 +40,11 @@ const routes = [
   },
   {
     method: 'GET',
+    path: '/question/{id}',
+    handler: site.viewQuestion
+  },
+  {
+    method: 'GET',
     path: '/logout',
     handler: user.logout
   },
@@ -85,6 +90,25 @@ const routes = [
       }
     },
     handler: question.createQuestion
+  },
+  {
+    method: 'POST',
+    path: '/answer-question',
+    options: {
+      validate: {
+        payload: Joi.object({
+          answer: Joi.string().required(),
+          id: Joi.string().required(),
+        }),
+        failAction: user.failValidation
+      }
+    },
+    handler: question.answerQuestion
+  },
+  {
+    method: 'GET',
+    path: '/answer/{questionId}/{answerId}',
+    handler: question.setAnswerRight
   },
   {
     method: ['GET', 'POST'],
