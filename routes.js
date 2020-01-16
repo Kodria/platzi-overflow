@@ -11,6 +11,12 @@ const routes = [
   {
     method: 'GET',
     path: '/',
+    // options: {
+    //   cache: {
+    //     expiresIn: 1000 * 30,
+    //     privacy: 'private'
+    //   }
+    // },
     handler: site.home
   },
   {
@@ -85,6 +91,7 @@ const routes = [
         payload: Joi.object({
           title: Joi.string().required(),
           description: Joi.string().required(),
+          image: Joi.any().optional()
         }),
         failAction: user.failValidation
       }

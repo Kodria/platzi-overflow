@@ -8,10 +8,18 @@ class Questions {
     this.collection = this.ref.child('questions')
   }
 
-  async create(data, user) {
+  async create(info, user, filename) {
     const question = {
-      ...data,
+      ...info,
       owner: user
+    }
+
+    if (question.hasOwnProperty('image')) {
+      delete question.image
+    }
+
+    if (filename) {
+      question.filename = filename
     }
 
     const newQuestion = this.collection.push(question)

@@ -5,6 +5,7 @@ const inert = require('inert')
 const path = require('path')
 const handlebars = require('./lib/helpers')
 const vision = require('vision')
+const good = require('good')
 const site = require('./controllers/site')
 
 const methods = require('./lib/methods')
@@ -24,8 +25,34 @@ async function init () {
   try {
     await server.register(inert)
     await server.register(vision)
+    await server.register({
+      plugin: good,
+      options: {
+        reporters: {
+          console: [
+            {
+              module: 'good-console'
+            },
+            'stdout'
+          ]
+        }
+      }
+    })
+
+    await server.register({
+      plugin: require('./lib/api'),
+      options: {
+        prefix: 'api'
+      }
+    })
 
     server.method('setAnswerRight', methods.setAnswerRight)
+    server.method('getLast', methods.getLast, {
+      cache: {
+        expiresIn: 1000 * 60,
+        generateTimeout: 2000 // Si el metodo falla despues de este tiempo se ejecuta fuera del cache
+      }
+    })
 
     server.state('user', {
       ttl: 1000 * 60 * 60,
@@ -53,15 +80,15 @@ async function init () {
     process.exit(1)
   }
 
-  console.log(`Servidor lanzado en ${server.info.uri}`)
+  server.log('info', `Servidor lanzado en ${server.info.uri}`)
 }
 
 process.on('unhandledRejection', error => {
-  console.error('unhandledRejection', error.message, error)
+  server.log('UnhandledRejection', error.message, error)
 })
 
 process.on('uncaughtException', error => {
-  console.error('uncaughtException', error.message, error)
+  server.log('UncaughtException', error.message, error)
 })
 
 init()

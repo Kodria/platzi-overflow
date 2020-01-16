@@ -4,12 +4,8 @@ const questions = require('../models').questions
 
 async function home(req, h) {
 
-  let data
-  try {
-    data = await questions.getLast(10)
-  } catch(error) {
-    console.error(error)
-  }
+  const data = await req.server.methods.getLast(10)
+  
   return h.view('index',{
     title: 'Home',
     user: req.state.user,
@@ -68,7 +64,7 @@ function notFound(req, h) {
 function fileNotFound(req, h) {
   const response = req.response
 
-  if (response.isBoom && response.output.statusCode === 404) {
+  if (!req.path.startsWith('/api') && response.isBoom && response.output.statusCode === 404) {
     return h.view('404', null, {
       layout: 'error-layout'
     }).code(404)
