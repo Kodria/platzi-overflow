@@ -5,6 +5,7 @@ const inert = require('inert')
 const path = require('path')
 const handlebars = require('handlebars')
 const vision = require('vision')
+const site = require('./controllers/site')
 
 const routes = require('./routes')
 
@@ -39,6 +40,8 @@ async function init () {
       layoutPath: 'views'
     })
 
+    server.ext('onPreResponse', site.fileNotFound)
+    
     server.route(routes)
 
     await server.start();

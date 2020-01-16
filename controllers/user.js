@@ -9,10 +9,17 @@ async function createUser(req, h) {
     result = await users.create(req.payload)
   } catch (error) {
     console.error(error)
-    return h.response('Problemas creando el usuario').code(500)
+
+    return h.view('register',{
+      title: 'Registro',
+      error: 'Error creando al usuario'
+    })
   }
   
-  return h.response(`Usuario creado ID: ${result}`).code(201)
+  return h.view('register',{
+    title: 'Registro',
+    success: 'Usuario creado exitosamente'
+  })
 }
 
 async function validateUser(req, h) {
@@ -21,11 +28,18 @@ async function validateUser(req, h) {
     result = await users.validateUser(req.payload)
 
     if (!result) {
-      return h.response('Email y/o contraseña incorrecta').code(401)
+      return h.view('login',{
+        title: 'Login',
+        error: 'Email y/o contraseña incorrecta'
+      })
     }
   } catch (error) {
     console.error(error)
-    return h.response('Problemas validando el usuario').code(500)
+    return h.view('login',{
+      title: 'Login',
+      error: 'Problemas validando el usuario'
+    })
+    
   }
 
 
@@ -40,7 +54,16 @@ function logout(req, h) {
 }
 
 function failValidation(req, h, error) {
-  return Boom.badRequest('Fallo la validación', req.payload)
+  const templates = {
+    '/create-user': 'register',
+    '/validate-user': 'login',
+    '/create-question': 'ask'
+  }
+
+  return h.view(templates[req.path], {
+    title: 'Error de validación',
+    error: error.output.payload.message
+  }).code(400).takeover()
 }
 
 module.exports = {

@@ -5,6 +5,7 @@ const Joi = require('@hapi/joi')
 const site = require('./controllers/site')
 const user = require('./controllers/user')
 const login = require('./controllers/login')
+const question = require('./controllers/question')
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     handler: user.logout
   },
   {
+    method: 'GET',
+    path: '/ask',
+    handler: site.ask
+  },
+  {
     method: 'POST',
     path: '/validate-user',
     options: {
@@ -58,13 +64,32 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/{param*}',
+    path: '/assets/{param*}',
     handler: {
       directory: {
         path: '.',
         index: ['index.html']
       }
     }
+  },
+  {
+    method: 'POST',
+    path: '/create-question',
+    options: {
+      validate: {
+        payload: Joi.object({
+          title: Joi.string().required(),
+          description: Joi.string().required(),
+        }),
+        failAction: user.failValidation
+      }
+    },
+    handler: question.createQuestion
+  },
+  {
+    method: ['GET', 'POST'],
+    path: '/{any*}',
+    handler: site.notFound
   }
 ];
 
