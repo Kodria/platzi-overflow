@@ -13,7 +13,7 @@ class Questions {
       owner: user
     }
 
-    if (question.hasOwnProperty('image')) {
+    if (Object.prototype.hasOwnProperty.call(question, 'image')) {
       delete question.image
     }
 
