@@ -6,7 +6,7 @@ const serviceAccount = require('../config/firebase.json')
 firebase.initializeApp({
   credential: firebase.credential.cert(serviceAccount),
   databaseURL: 'https://platzioverflow-84fda.firebaseio.com/'
-});
+})
 
 const db = firebase.database()
 

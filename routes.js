@@ -105,7 +105,7 @@ const routes = [
       validate: {
         payload: Joi.object({
           answer: Joi.string().required(),
-          id: Joi.string().required(),
+          id: Joi.string().required()
         }),
         failAction: user.failValidation
       }
@@ -122,6 +122,6 @@ const routes = [
     path: '/{any*}',
     handler: site.notFound
   }
-];
+]
 
 module.exports = routes

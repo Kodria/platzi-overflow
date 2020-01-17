@@ -1,6 +1,10 @@
-'user strict';
+'user strict'
 
-const Hapi = require('@hapi/hapi');
+const Hapi = require('@hapi/hapi')
+const crumb = require('crumb')
+const happiDevErrors = require('hapi-dev-errors')
+const blankie = require('blankie')
+const scooter = require('scooter')
 const inert = require('inert')
 const path = require('path')
 const handlebars = require('./lib/helpers')
@@ -40,9 +44,36 @@ async function init () {
     })
 
     await server.register({
+      plugin: crumb,
+      options: {
+        cookieOptions: {
+          isSecure: process.env.NODE_ENV === 'prod'
+        }
+      }
+    })
+
+    await server.register({
       plugin: require('./lib/api'),
       options: {
         prefix: 'api'
+      }
+    })
+
+    await server.register([scooter, {
+      plugin: blankie,
+      options: {
+        defaultSrc: "'self' 'unsafe-inline'",
+        styleSrc: "'self' 'unsafe-inline' https://maxcdn.bootstrapcdn.com",
+        fontSrc: "'self' 'unsafe-inline' data:",
+        scriptSrc: "'self' 'unsafe-inline' https://maxcdn.bootstrapcdn.com/ https://code.jquery.com/ https://cdnjs.cloudflare.com/",
+        generateNonces: false
+      }
+    }])
+
+    await server.register({
+      plugin: happiDevErrors,
+      options: {
+        showErrors: process.env.NODE_ENV !== 'prod'
       }
     })
 
@@ -56,7 +87,7 @@ async function init () {
 
     server.state('user', {
       ttl: 1000 * 60 * 60,
-      isSecure: process.env.NODE_ENV == 'prod',
+      isSecure: process.env.NODE_ENV === 'prod',
       encoding: 'base64json'
     })
 
@@ -71,10 +102,10 @@ async function init () {
     })
 
     server.ext('onPreResponse', site.fileNotFound)
-    
+
     server.route(routes)
 
-    await server.start();
+    await server.start()
   } catch (error) {
     console.log(error)
     process.exit(1)

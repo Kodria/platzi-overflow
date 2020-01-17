@@ -5,7 +5,7 @@ function login (req, h) {
     return h.redirect('/')
   }
 
-  return h.view('login',{
+  return h.view('login', {
     title: 'Ingrese',
     user: req.state.user
   })

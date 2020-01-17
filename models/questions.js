@@ -1,14 +1,13 @@
 'use strict'
 
 class Questions {
-  
   constructor (db) {
     this.db = db
     this.ref = this.db.ref('/')
     this.collection = this.ref.child('questions')
   }
 
-  async create(info, user, filename) {
+  async create (info, user, filename) {
     const question = {
       ...info,
       owner: user
@@ -27,19 +26,19 @@ class Questions {
     return newQuestion.key
   }
 
-  async getLast(amount) {
+  async getLast (amount) {
     const query = await this.collection.limitToLast(amount).once('value')
     const data = query.val()
     return data
   }
 
-  async getOne(id) {
+  async getOne (id) {
     const query = await this.collection.child(id).once('value')
     const data = query.val()
     return data
   }
 
-  async answer(data, user) {
+  async answer (data, user) {
     const newAnswer = {
       text: data.answer,
       user: user
@@ -49,7 +48,7 @@ class Questions {
     return answers
   }
 
-  async setAnswerRight(questionId, answerId, user) {
+  async setAnswerRight (questionId, answerId, user) {
     const query = await this.collection.child(questionId).once('value')
     const question = query.val()
 
@@ -59,7 +58,7 @@ class Questions {
       return false
     }
 
-    for (let key in answers) {
+    for (const key in answers) {
       answers[key].correct = (key === answerId)
     }
 

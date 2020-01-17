@@ -2,11 +2,10 @@
 
 const questions = require('../models').questions
 
-async function home(req, h) {
-
+async function home (req, h) {
   const data = await req.server.methods.getLast(10)
-  
-  return h.view('index',{
+
+  return h.view('index', {
     title: 'Home',
     user: req.state.user,
     questions: data
@@ -18,7 +17,7 @@ function register (req, h) {
     return h.redirect('/')
   }
 
-  return h.view('register',{
+  return h.view('register', {
     title: 'Registro',
     user: req.state.user
   })
@@ -29,20 +28,19 @@ function ask (req, h) {
     return h.redirect('/login')
   }
 
-  return h.view('ask',{
+  return h.view('ask', {
     title: 'Crear pregunta',
     user: req.state.user
   })
 }
 
-async function viewQuestion(req, h) {
+async function viewQuestion (req, h) {
   let data
   try {
     data = await questions.getOne(req.params.id)
     if (!data) {
       return notFound(req, h)
     }
-
   } catch (error) {
     console.error(error)
   }
@@ -55,13 +53,13 @@ async function viewQuestion(req, h) {
   })
 }
 
-function notFound(req, h) {
+function notFound (req, h) {
   return h.view('404', null, {
     layout: 'error-layout'
   }).code(404)
 }
 
-function fileNotFound(req, h) {
+function fileNotFound (req, h) {
   const response = req.response
 
   if (!req.path.startsWith('/api') && response.isBoom && response.output.statusCode === 404) {

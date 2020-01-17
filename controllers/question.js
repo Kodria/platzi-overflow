@@ -7,11 +7,10 @@ const uuid = require('uuid')
 const questions = require('../models').questions
 
 const write = promisify(writeFile)
-async function createQuestion(req, h) {
-
+async function createQuestion (req, h) {
   if (!req.state.user) return h.redirect('/login')
 
-  let result, filename;
+  let result, filename
   try {
     if (Buffer.isBuffer(req.payload.image)) {
       filename = `${uuid()}.png`
@@ -24,22 +23,21 @@ async function createQuestion(req, h) {
   } catch (error) {
     req.log('error', `Ocurrio un error: ${error}`)
 
-    return h.view('ask',{
+    return h.view('ask', {
       title: 'Crear pregunta',
       error: 'Error creando una pregunta'
     }).code(500).takeover()
   }
-  
+
   return h.redirect(`/question/${result}`)
 }
 
-async function answerQuestion(req, h) {
-
+async function answerQuestion (req, h) {
   if (!req.state.user) return h.redirect('/login')
 
-  let result;
+  // let result
   try {
-    result = await questions.answer(req.payload, req.state.user)
+    await questions.answer(req.payload, req.state.user)
   } catch (error) {
     console.log(error)
   }
@@ -47,13 +45,12 @@ async function answerQuestion(req, h) {
   return h.redirect(`/question/${req.payload.id}`)
 }
 
-async function setAnswerRight(req, h) {
-
+async function setAnswerRight (req, h) {
   if (!req.state.user) return h.redirect('/login')
-  
-  let result
+
+  // let result
   try {
-    result = await req.server.methods.setAnswerRight(req.params.questionId, req.params.answerId, req.state.user)
+    await req.server.methods.setAnswerRight(req.params.questionId, req.params.answerId, req.state.user)
   } catch (error) {
     console.error(error)
   }
