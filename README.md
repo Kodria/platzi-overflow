@@ -6,3 +6,10 @@ Sistema tipo foro, donde se permite iniciar sesió, crear y responder preguntas
 
 - HapiJs
 - Hbs
+
+## Instalación y configuración
+
+```
+npm install
+npm run dev
+```
