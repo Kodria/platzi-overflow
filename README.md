@@ -47,6 +47,30 @@ docker-compose up -d
 # Finalizar el contenedor
 docker-compose down
 ```
+### Lanzamiento Modo producción
+
+- Para el modo de desarrollo es importante tener configuradas las variables de entorno 
+  - PORT
+  - NODE_ENV
+
+- Inicializar el contenedor
+```
+
+# Iniciarlizar el contenedor por primera vez
+docker-compose -f docker-compose.prod.yml up -d --build
+
+# Cuando ya se ha construido la imagen es posible ejecutar
+docker-compose -f docker-compose.prod.yml up -d
+
+```
+- Cuando el contenedor termine de inicializar es posible acceder a este a traves de la dirección `http://localhost:SERVER_PORT`
+
+- Como ultimo paso y para finalizar es necesario dar de baja el contenedor
+
+```
+# Finalizar el contenedor
+docker-compose down
+```
 
 ## Variables de entorno
 

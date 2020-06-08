@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --ext js,hbs",
+    "prod": "node index.js",
     "lint": "standard",
     "lint-fix": "standard --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
