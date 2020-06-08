@@ -48,6 +48,7 @@ Thumbs.db
 
 #skip config files
 .env*
-/src/config/env*.json
+/config/firebase.json
+
 
 public/uploads
