@@ -1,5 +1,53 @@
-node_modules
+# skip compiled output
+/node_modules
+/dist
+/build
+_build
+_static
+_templates
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.code-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+testem.log
+
+# System Files
 .DS_Store
-.vscode
+Thumbs.db
+
+# dependencies
+/.pnp
+.pnp.js
+
+#skip config files
+.env*
+/src/config/env*.json
 
 public/uploads

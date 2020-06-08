@@ -17,7 +17,7 @@ const routes = require('./routes')
 
 const server = Hapi.server({
   port: process.env.PORT || 3001,
-  host: 'localhost',
+  host: '0.0.0.0',
   routes: {
     files: {
       relativeTo: path.join(__dirname, 'public')

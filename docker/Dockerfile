@@ -1,0 +1,8 @@
+FROM node:lts AS base
+WORKDIR /usr/src/app
+COPY ["package.json", "package-lock.json*", "./"]
+RUN npm install --silent
+ARG PORT
+EXPOSE ${PORT}
+COPY [".", "/usr/src/app"]
+CMD npm run dev
