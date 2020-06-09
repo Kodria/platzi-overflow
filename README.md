@@ -6,11 +6,12 @@ Sistema tipo foro, donde se permite iniciar sesión, crear y responder preguntas
 
 - HapiJs
 - Hbs
+- Firebase
 - Docker
 
 ## Instalación y configuración
 
-Para el funcionamiento del proyecto se utiliza DOcker. A continuación la forma de inicializar
+Para el funcionamiento del proyecto se utiliza Docker. A continuación la forma de inicializar
 
 ### Configuración
 
@@ -22,6 +23,7 @@ Antes de iniciar los servicios del proyecto es necesario generar un archivo de c
 touch .env
 ```
 - En dicho archivo agregar y configurar las variables necesarias
+- Ya que el proyecto utiliza Firebase como sistema para persistir la data es necesario primero configurar dicha base de datos y agregar el archivo `firebase.json` generado en el directorio `config/`
 
 ### Lanzamiento Modo desarrollo
 
@@ -77,4 +79,5 @@ docker-compose down
 ```
 NODE_ENV=dev|prod
 PORT=YOUR_PORT
+FIREBASE_DATABASE=URL_FIREBASE_DATABASE
 ```
