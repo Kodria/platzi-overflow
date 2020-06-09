@@ -2,6 +2,8 @@
 
 Sistema tipo foro, donde se permite iniciar sesión, crear y responder preguntas
 
+#### Nota: Proyecto estrictamente educativo
+
 ## Herramientas utilizadas
 
 - HapiJs
